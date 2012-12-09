@@ -1,0 +1,48 @@
+(defn eq? [a b] (= a b))
+
+(defn make-cd-control []
+  (def ^:dynamic status)
+  (def ^:dynamic titelzahl)
+  (def ^:dynamic aktueller-titel)
+  (def ^:dynamic abspielstatus)
+
+  (binding [status nil
+            titelzahl nil
+            aktueller-titel nil
+            abspielstatus nil]
+
+    (defn reset []
+      (set! status 'leer)
+      (set! titelzahl 0)
+      (set! aktueller-titel 0)
+      (set! abspielstatus 'undefiniert))
+    (reset)
+
+    (defn einlegen [neue-titelzahl]
+      (if (eq? status 'cd)
+        'cd-fach-belegt
+        (do (set! status 'cd)
+            (set! titelzahl neue-titelzahl)
+            (set! aktueller-titel 1)
+            (set! abspielstatus 'stop))))
+
+    (fn [message parameter]
+      (cond (= message 'einlegen)
+              (einlegen parameter)
+            (= message 'auswerfen)
+              (println "Auswerfen")
+            (= message 'abspielen)
+              (println "Abspielen")
+            (= message 'stop)
+              (println "Stop")
+            (= message 'vor)
+              (println "Vor")
+            (= message 'zurueck)
+              (println "Zurueck")
+            (= message 'test)
+              (println "test")
+            :else nil))))
+
+
+(def cd1 (make-cd-control))
+(cd1 'einlegen 4)

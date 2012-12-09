@@ -1,0 +1,16 @@
+(define (ggT a b)
+  (cond ((= a b) a)
+        ((= a 0) b)
+        ((= b 0) a)
+        ((< a b) (ggT a (- b a)))
+        ((< b a) (ggT b (- a b)))))
+
+(define (brueche-increment m n)
+  (let ((inc-m (+ m 1)) (inc-n (+ n 1)))
+    (let ((new-m (if (< inc-m n) inc-m 1))
+          (new-n (if (< inc-m n) n inc-n)))
+      (if (= (ggT m n) 1)
+        (cons-stream (list m n) (brueche-increment new-m new-n))
+        (brueche-increment new-m new-n)))))
+
+(define (brueche) (brueche-increment 1 2))

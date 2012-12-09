@@ -1,0 +1,51 @@
+; Task 1.1
+(def the-empty-stream '())
+(defmacro cons-stream [x y]
+  (cons x (delay y)))
+(def head first)
+(defn tail [s] (force (first (rest s))))
+(def empty-stream? empty?)
+
+(cons-stream 1 2)
+
+(defn fib-stream-increment [x y i]
+  (let [next (max (+ x y) 1)]
+    [[i y] (delay (fib-stream-increment y next (inc i)))]))
+
+(defn fib-stream [] (fib-stream-increment 0 0 0))
+
+(def a (fib-stream))
+
+(tail a)
+(tail (tail a))
+(tail (tail (tail a)))
+(tail (tail (tail (tail a))))
+(tail (tail (tail (tail (tail a)))))
+(tail (tail (tail (tail (tail (tail a))))))
+(tail (tail (tail (tail (tail (tail (tail a)))))))
+(tail (tail (tail (tail (tail (tail (tail (tail a))))))))
+(tail (tail (tail (tail (tail (tail (tail (tail (tail a)))))))))
+(tail (tail (tail (tail (tail (tail (tail (tail (tail (tail a))))))))))
+(tail (tail (tail (tail (tail (tail (tail (tail (tail (tail (tail a)))))))))))
+
+
+; Task 1.2
+(defn map [f s]
+  (if (empty-stream? s)
+    the-empty-stream
+    s))
+
+;(defn filter [p s]
+;  (if (empty-stream? s)
+;    the-empty-stream
+;    (let [x (head s)]
+;      (if (p x)
+;        (cons-stream x (filter p (tail s)))
+;        (filter p (tail s))))))
+
+(defn mapper [i]
+  (first i))
+
+(def b (map mapper a))
+
+(head b)
